@@ -1,0 +1,89 @@
+<?php 
+
+  if (isset($_POST['upload'])) {
+    $img = $_FILES['image'];
+
+
+    //catch name of file
+    $file_name = $img['name'];
+
+    //catch temorary name of file
+    $temp_name = $img['tmp_name'];
+
+
+    //catch format form file_name
+    $format = explode('.',$file_name);
+
+
+    //find file name and make it smallcase
+    $actual_name_of_file = strtolower($format[0]);
+
+     //find file name and make it capitalcase
+    $actual_format_of_file = strtolower($format[1]);
+
+
+
+     //select format name for check
+    $allowed_format = ['jpg','png','jpeg','gif'];
+
+
+ //now file format and allowed format will be check in array(in_array) 
+
+
+    if(in_array($actual_format_of_file,$allowed_format)){
+
+        //file name and format anf folder name will be concatinate
+
+        $location = 'image/'.$actual_name_of_file.'.'. $actual_format_of_file;
+
+
+        //check that file already exits or not
+       if (file_exists($location)) {
+        echo "file already has";
+       }else{
+
+        //move the file if everythis is okey
+        if (move_uploaded_file($temp_name,$location) == 'ture') {
+            echo "Moved image into image folder";
+        }
+       }
+        
+    }
+
+
+   
+
+  }
+
+?>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Uploading test</title>
+</head>
+<body>
+
+    <form action="index.php" method="post" enctype="multipart/form-data">
+    <table border="1"> 
+           <tbody>
+           <tr>
+                <td><label for="image">Image</label></td>
+                <td><input type="file" name="image"></td>
+                <input type="submit" value="Upload" name="upload">
+            </tr>
+           
+           </tbody>
+    </table>
+    </form>
+
+
+    
+</body>
+</html>
